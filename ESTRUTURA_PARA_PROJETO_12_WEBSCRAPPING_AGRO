@@ -1,0 +1,42 @@
+
+ESTRUTURA PARA PROJETO 12 WEBSCRAPPING AGRO
+
+data/:
+
+   raw/: Dados coletados diretamente do scraping, mas que foram colocados numa estrutura. (OK)
+   processed/: Dados minimamente processados. (OK)
+   final/: Dados prontos para análise ou uso em outros contextos. (OK)
+
+src/:
+
+   __init__.py: Torna a pasta um pacote Python para importação fácil. (OK)
+   scraper.py: Código responsável por realizar o scraping das páginas da web. (OK)
+   parser.py: Código para extrair os dados coletados. (OK)
+   config.py: Configurações como URLs de sites, seletores CSS, e parâmetros de scraping. (OK)
+
+notebooks/:
+
+   analysis.ipynb: Notebooks para exploração dos dados, análise e visualização. (OK)
+
+tests/:
+
+   test_scraper.py: Testes automatizados para garantir que o scraping e o parsing funcionem como esperado. Pode incluir testes de integração e unidade. (OK)
+
+
+requirements.txt: Lista das dependências do projeto. Pode ser gerado com pip freeze > requirements.txt para garantir que todos os pacotes necessários estejam documentados.
+
+
+README.md: Documentação do projeto, incluindo uma descrição geral, instruções de instalação e uso, e informações relevantes sobre o projeto.
+
+.gitignore: Especifica arquivos e pastas que o Git deve ignorar (como arquivos de log, dados brutos, ambientes virtuais).
+
+
+Boas Práticas
+Documente seu código: Use docstrings e comentários para explicar o que cada parte do código faz.
+Versionamento: Use controle de versão (como Git) para gerenciar alterações no código e colaborar com outros desenvolvedores.
+Manutenção e Testes: Escreva testes para garantir que mudanças no código não quebrem funcionalidades existentes. Mantenha logs para depuração e monitoramento.
+Essa estrutura deve ajudar a manter seu projeto organizado e facilitar a colaboração e o crescimento futuro. Se precisar de ajustes específicos para o seu caso, você pode adaptar essa estrutura conforme necessário.
+
+
+
+

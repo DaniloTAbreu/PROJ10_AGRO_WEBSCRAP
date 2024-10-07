@@ -1,0 +1,147 @@
+Para salvar dados de um DataFrame em um banco de dados SQLite usando Docker Desktop, você pode seguir esses passos:
+
+Criar um contêiner Docker com uma imagem Python
+Montar um volume para persistência dos dados
+
+Executar um script Python dentro do contêiner para salvar os dados no banco de dados SQLite
+Passo 1: Criar um contêiner Docker com uma imagem Python
+Primeiro, crie um Dockerfile para definir o ambiente:
+
+# Use a imagem oficial do Python
+FROM python:3.9-slim
+
+# Instale as dependências necessárias
+RUN pip install pandas sqlalchemy
+
+# Copie o script Python para o contêiner
+COPY save_data.py /app/save_data.py
+
+# Defina o diretório de trabalho
+WORKDIR /app
+
+# Comando padrão para rodar o script
+CMD ["python", "save_data.py"]
+
+
+Passo 2: Criar um script Python
+Crie um script Python chamado save_data.py:
+
+import pandas as pd
+from sqlalchemy import create_engine
+
+# Crie um DataFrame de exemplo
+data = {'name': ['John', 'Anna', 'Peter'],
+        'age': [28, 24, 35]}
+df = pd.DataFrame(data)
+
+# Defina a URL de conexão para SQLite
+db_url = 'sqlite:///mydatabase.db'
+
+# Crie um engine de conexão
+engine = create_engine(db_url)
+
+# Salve o DataFrame no banco de dados
+df.to_sql('people', engine, if_exists='replace', index=False)
+
+print("Dados salvos no banco de dados SQLite!")
+
+
+Passo 3: Construir a imagem Docker
+No terminal, navegue até o diretório onde o Dockerfile e o script Python estão localizados e execute:
+
+docker build -t my-python-app .
+
+Passo 4: Executar o contêiner com um volume montado
+Execute o contêiner, montando um volume para persistir o banco de dados SQLite:
+para criar container pela primeira vez:
+docker run --name my-running-app -v C:\Users\Danilo\PROJETOS\PROJETO12_TESTE_WEBSCRAPPING_AGRO\src\data:/app/data my-python-app
+
+para iniciar container existente:
+docker start my-running-app
+
+para parar container existente:
+docker stop my-running-app
+
+para remover container:
+docker rm my-running-app
+
+Isso monta o diretório data do seu host no diretório /app/data do contêiner, onde o banco de dados SQLite será salvo.
+
+Revisão do processo:
+Dockerfile: Define a imagem Python e instala as dependências.
+Script Python: Define os dados e salva no banco de dados SQLite.
+Construir e executar o contêiner: Usa volumes para persistência dos dados.
+
+
+CENÁRIO LOCAL:
+agora vamos ter 2 arquivos - 1 para webscrap e gravar o bd e outro para ler o bd e salvar num df
+
+cenário rodando local:
+
+python Projeto_webscrap_save_db_agro.py
+python Projeto_load_db_agro.py
+
+
+CENÁRIO DOCKER SEM PERSISTIR OS DADOS CRIADOS NO BANCO DE DADOS:
+container para webscrap e criação do banco de dados
+docker build -t my-python-app .
+cria banco de dados sem persistir o resultado após parar o container:
+docker run --name my-running-app -v C:\Users\Danilo\PROJETOS\PROJETO12_TESTE_WEBSCRAPPING_AGRO\src\data:/app/data my-python-app
+
+CENÁRIO DOCKER PARA PERSISTIR OS DADOS CRIADOS NO BANCO DE DADOS:
+para persistir dados do banco de dados no docker, tem que criar volume
+docker volume create sqlite_data
+executar o container com o volume montado:
+docker run -d --name my-running-app -v C:\Users\Danilo\PROJETOS\PROJETO12_TESTE_WEBSCRAPPING_AGRO\src\data:/app/data my-python-app
+
+
+
+
+container para carregar arquivo do banco de dados e criar o dataframe
+docker build -t load_bd .
+docker run --name data_raw -v C:\Users\Danilo\PROJETOS\PROJETO12_TESTE_WEBSCRAPPING_AGRO\src\data:/app/data load_bd
+docker exec -it data_raw bash
+
+
+
+
+
+Carregando o Banco de Dados em um Novo Contêiner
+Inicie um Novo Contêiner com SQLite3:
+Se você estiver usando um contêiner básico para uma aplicação que usa SQLite3, o contêiner deve ter um ambiente que suporte a leitura e escrita de arquivos SQLite. Se você precisar configurar um novo contêiner, você pode usar um contêiner que já tenha SQLite3 instalado ou criar um personalizado.
+
+Copie o Arquivo de Banco de Dados para o Novo Contêiner:
+Use docker cp para copiar o arquivo de banco de dados do seu sistema local para o novo contêiner:
+
+bash
+Copiar código
+docker cp /caminho/local/banco_de_dados.db nome_do_novo_container:/caminho/para/banco_de_dados.db
+docker cp /caminho/local/banco_de_dados.db nome_do_novo_container:/caminho/para/banco_de_dados.db
+
+Verifique o Banco de Dados no Novo Contêiner:
+Acesse o novo contêiner e verifique se o arquivo do banco de dados está presente no local esperado:
+
+bash
+Copiar código
+docker exec -it nome_do_novo_container bash
+
+ls /caminho/para/banco_de_dados.db
+Use o Banco de Dados em Sua Aplicação:
+Se a sua aplicação ou serviço estiver configurado para usar o banco de dados SQLite, ele deve estar configurado para apontar para o arquivo do banco de dados que você acabou de copiar.
+
+Exemplos Práticos
+Se o Contêiner Usa SQLite diretamente:
+Se o contêiner que você está usando já tem a aplicação configurada para trabalhar com SQLite, você pode simplesmente garantir que a aplicação está configurada para usar o arquivo de banco de dados no novo contêiner.
+
+Se Você Precisa Acessar o Banco de Dados:
+Você pode acessar o banco de dados SQLite no novo contêiner usando o cliente SQLite:
+
+bash
+Copiar código
+sqlite3 /caminho/para/banco_de_dados.db
+Depois, você pode executar comandos SQL diretamente no banco de dados, se necessário.
+
+Dicas Adicionais
+Volumes Docker: Se você estiver lidando com dados importantes e quiser uma solução mais robusta, considere usar volumes Docker para persistência e compartilhamento de dados entre contêineres.
+
+Backup Regular: Mantenha backups regulares dos seus arquivos de banco de dados, especialmente se você estiver lidando com dados críticos.

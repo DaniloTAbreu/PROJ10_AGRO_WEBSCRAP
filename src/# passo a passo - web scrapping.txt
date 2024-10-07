@@ -1,0 +1,36 @@
+# passo a passo - web scrapping
+
+# 1 - CRIAÇÃO DE UM AMBIENTE PYTHON SEPARADO:
+
+# comando para criar um novo ambiente
+conda create --name data-collect python=3.
+
+# para ativar
+conda activate data-collect
+
+# 2 - Criar uma pasta e um arquivo.py (no exemplo, criei a pasta C:\Users\Chilov\FCD\PROJETOS\TESTE_WEBSCRAPPING\residente_evil 
+e o arquivo collect.py dentro desta pasta)
+
+# 3 - No VS CODE, abrir a pasta e o arquivo.py (no caso, collect.py)
+
+# 4 - No VS CODE, no lado direito embaixo, escolha a mesma versão python que foi criada no item 1.
+
+# 5 - Após criar a pasta e o arquivo, vamos chamá-los (pode ser através do VS CODE nesta pasta)
+python resident_evil/collect.py
+
+# 6 - Exemplo: site https://www.residentevildatabase.com/personagens/ada-wong/#google_vignette
+# No site, vá até (3 pontos, mais ferramentas, ferramentas do desenvolvedor)
+
+# 7 - Clique em network e depois ctrl+R
+# alterar o tipo de leitura para português, se necessário
+
+# 8 - Vai aparecer em primeiro ada-wong/. Clique com botão direito e depois copiar, copiar como cURL (bash)
+
+# 9 - Vá no google e digite curl to python. Clique no primeiro link.
+
+# 10 - Copie os headers (aparece embaixo) e coloque no logo abaixo do url do arquivo collect.py. Obs: nos headers não precisa colocar os cookies.
+
+# 11 - Instalar o beautifulsoup
+pip install beautifulsoup4
+
+# 12 - Agora, vamos selecionar o que queremos do texto. Indo no caminho apontado no item 6, e em elements, clique na caixa com seta do lado esquerdo. Logo abaixo do elements, aparece a parte do código correspondente ao que você clicou na página mostrada do lado esquerdo da tela.
